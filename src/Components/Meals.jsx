@@ -1,15 +1,17 @@
-import { use } from "react"
-import { MealsContext } from "../store/foodOrderContext"
+import { use } from "react";
+import { MealsContext } from "../store/foodOrderContext";
+import formatCurrency from "../utils/utils";
 
-function formatCurrency(number) {
-    return new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-    }).format(number);
-}
 
 export function Meals() {
-    const { meals } = use(MealsContext);
+    const { meals , addOrder } = use(MealsContext);
+    function handleAddToCart(meal){
+        addOrder({
+            mealId : meal.id,
+            mealName: meal.name,
+            mealPrice: meal.price
+        })
+    }
     return (
         <div id="meals">
             {meals &&
@@ -22,7 +24,7 @@ export function Meals() {
 
                         <p className="meal-item-description">{meal.description}</p>
                         <div className="meal-item-actions">
-                            <button className="button">Add to Cart</button>
+                            <button className="button" onClick={()=>handleAddToCart(meal)}>Add to Cart</button>
                         </div>
                     </div>
                 ))}
